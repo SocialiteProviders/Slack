@@ -55,9 +55,10 @@ class Provider extends AbstractProvider implements ProviderInterface
     }
 
     /**
-     * Get the account ID of the current user
+     * Get the account ID of the current user.
      *
-     * @param  string $token
+     * @param string $token
+     *
      * @return string
      */
     protected function getUserId($token)
