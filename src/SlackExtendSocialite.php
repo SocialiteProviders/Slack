@@ -1,4 +1,5 @@
 <?php
+
 namespace SocialiteProviders\Slack;
 
 use SocialiteProviders\Manager\SocialiteWasCalled;

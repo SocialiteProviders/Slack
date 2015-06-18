@@ -1,4 +1,5 @@
 <?php
+
 namespace SocialiteProviders\Slack;
 
 use Laravel\Socialite\Two\AbstractProvider;
@@ -39,7 +40,7 @@ class Provider extends AbstractProvider implements ProviderInterface
             'https://slack.com/api/users.info?token='.$token.'&user='.$this->getUserId($token)
         );
 
-        return json_decode($response->getBody(), true)['user'];
+        return json_decode($response->getBody()->getContents(), true)['user'];
     }
 
     /**
@@ -68,7 +69,7 @@ class Provider extends AbstractProvider implements ProviderInterface
             'https://slack.com/api/auth.test?token='.$token
         );
 
-        $response = json_decode($response->getBody(), true);
+        $response = json_decode($response->getBody()->getContents(), true);
 
         return $response['user_id'];
     }
