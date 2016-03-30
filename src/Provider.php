@@ -9,6 +9,11 @@ use SocialiteProviders\Manager\OAuth2\User;
 class Provider extends AbstractProvider implements ProviderInterface
 {
     /**
+     * Unique Provider Identifier.
+     */
+    const IDENTIFIER = 'SLACK';
+
+    /**
      * {@inheritdoc}
      */
     protected $scopes = [];
