@@ -16,7 +16,7 @@ class Provider extends AbstractProvider implements ProviderInterface
     /**
      * {@inheritdoc}
      */
-    protected $scopes = ['identity.basic','identity.email','identity.team','identity.avatar'];
+    protected $scopes = ['identity.basic', 'identity.email', 'identity.team', 'identity.avatar'];
 
     /**
      * The separating character for the requested scopes.
@@ -60,7 +60,7 @@ class Provider extends AbstractProvider implements ProviderInterface
      */
     protected function mapUserToObject(array $user)
     {
-        return (new User)->setRaw($user)->map([
+        return (new User())->setRaw($user)->map([
             'id' => $user['user']['id'],
             'name' => $user['user']['name'],
             'email' => $user['user']['email'],
