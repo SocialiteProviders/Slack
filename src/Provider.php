@@ -16,7 +16,14 @@ class Provider extends AbstractProvider implements ProviderInterface
     /**
      * {@inheritdoc}
      */
-    protected $scopes = [];
+    protected $scopes = ['identity.basic', 'identity.email', 'identity.team', 'identity.avatar'];
+
+    /**
+     * The separating character for the requested scopes.
+     *
+     * @var string
+     */
+    protected $scopeSeparator = ',';
 
     /**
      * {@inheritdoc}
@@ -42,10 +49,10 @@ class Provider extends AbstractProvider implements ProviderInterface
     protected function getUserByToken($token)
     {
         $response = $this->getHttpClient()->get(
-            'https://slack.com/api/users.info?token='.$token.'&user='.$this->getUserId($token)
+            'https://slack.com/api/users.identity?token='.$token
         );
 
-        return json_decode($response->getBody()->getContents(), true)['user'];
+        return json_decode($response->getBody()->getContents(), true);
     }
 
     /**
@@ -54,28 +61,11 @@ class Provider extends AbstractProvider implements ProviderInterface
     protected function mapUserToObject(array $user)
     {
         return (new User())->setRaw($user)->map([
-            'id' => $user['id'], 'nickname' => $user['name'],
-            'name' => $user['profile']['real_name'],
-            'email' => $user['profile']['email'],
-            'avatar' => $user['profile']['image_192'],
+            'id' => $user['user']['id'],
+            'name' => $user['user']['name'],
+            'email' => $user['user']['email'],
+            'avatar' => $user['user']['image_192'],
+            'organization_id' => $user['team']['id'],
         ]);
-    }
-
-    /**
-     * Get the account ID of the current user.
-     *
-     * @param string $token
-     *
-     * @return string
-     */
-    protected function getUserId($token)
-    {
-        $response = $this->getHttpClient()->get(
-            'https://slack.com/api/auth.test?token='.$token
-        );
-
-        $response = json_decode($response->getBody()->getContents(), true);
-
-        return $response['user_id'];
     }
 }
